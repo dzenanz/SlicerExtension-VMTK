@@ -27,8 +27,13 @@ mark_as_superbuild(Slicer_DIR)
 find_package(Git REQUIRED)
 mark_as_superbuild(GIT_EXECUTABLE)
 
-find_package(ExtraMarkups REQUIRED)
-mark_as_superbuild(ExtraMarkups_DIR)
+option(SlicerVMTK_enable_ExtraMarkups_and_StenosisMeasurement3D
+  "This needs to be disabled during initial build when this extension is bundled with Slicer" ON)
+
+if(SlicerVMTK_enable_ExtraMarkups_and_StenosisMeasurement3D)
+  find_package(ExtraMarkups REQUIRED)
+  mark_as_superbuild(ExtraMarkups_DIR)
+endif()
 
 #-----------------------------------------------------------------------------
 # SuperBuild setup
@@ -57,7 +62,9 @@ add_subdirectory(GuidedArterySegmentation)
 add_subdirectory(GuidedVeinSegmentation)
 add_subdirectory(StenosisMeasurement1D)
 add_subdirectory(StenosisMeasurement2D)
-add_subdirectory(StenosisMeasurement3D)
+if(SlicerVMTK_enable_ExtraMarkups_and_StenosisMeasurement3D)
+  add_subdirectory(StenosisMeasurement3D)
+endif()
 add_subdirectory(BranchClipper)
 add_subdirectory(ArterialCalcificationPreProcessor)
 add_subdirectory(CenterlineDisassembly)
